@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import be.webflux.dao.OrganisationRepository;
@@ -20,6 +21,7 @@ public class OrganisationService {
 	
 	@PostMapping("/organisation")
 	public Mono<Organisation> create(@Valid @RequestBody Organisation o) {
+		System.out.println("save:"+o);
 		return organisationRepository.insert(o);
 	}
 
@@ -47,8 +49,8 @@ public class OrganisationService {
 		return organisationRepository.deleteById(id);
 	}
 	
-//	@GetMapping("/organisation",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//	public Flux<Organisation> streamAll() {
-//		return organisationRepository.findAll();
-//	}
+	@GetMapping(path="/stream/organisation",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public Flux<Organisation> streamAll() {
+		return organisationRepository.findAll();
+	}
 }
